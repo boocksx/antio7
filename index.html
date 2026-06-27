@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Private Gallery</title>
 <style>
-/* ==================== ОСНОВНОЙ СТИЛЬ (desktop + mobile) ==================== */
+/* ==================== ОСНОВНОЙ СТИЛЬ ==================== */
 body{
   margin:0;
   font-family:Arial, sans-serif;
@@ -26,7 +26,6 @@ header h1{
   font-size:28px;
 }
 
-/* GRID */
 .grid{
   display:grid;
   grid-template-columns:repeat(auto-fit, minmax(160px, 1fr));
@@ -34,7 +33,6 @@ header h1{
   padding:15px;
 }
 
-/* КАРТОЧКИ */
 .card{
   background:#1a1a1a;
   border-radius:12px;
@@ -85,7 +83,6 @@ header h1{
   box-shadow:0 0 20px rgba(255,77,136,0.4);
 }
 
-/* Разные popup для mobile/desktop */
 .popup-box h3{
   margin:0 0 12px 0;
   font-size:20px;
@@ -99,7 +96,6 @@ header h1{
   display:block;
 }
 
-/* Кнопки */
 .btn{
   margin-top:8px;
   padding:12px 20px;
@@ -132,29 +128,20 @@ header h1{
 
 /* ==================== MEDIA QUERIES ==================== */
 @media (max-width: 480px) {
-  .popup-box h3 {
-    font-size: 18px;
-  }
-  .popup-box {
-    padding: 16px;
-  }
-  .card {
-    height: auto;
-  }
-  .card img {
-    height: 160px;
-  }
+  .popup-box h3 { font-size: 18px; }
+  .popup-box { padding: 16px; }
+  .card img { height: 160px; }
 }
 </style>
 </head>
 <body>
 
 <header>
-  <h1>Private Gallery</h1>
+  <h1 id="headerTitle">Private Gallery</h1>
 </header>
 
 <div class="grid">
-  <!-- КАРТОЧКИ (переход на один и тот же affiliate-ссылка) -->
+  <!-- КАРТОЧКИ -->
   <div class="card" onclick="go('https://serag.top/click?o=2&a=6549')">
     <img src="https://i.postimg.cc/TYXJmX4z/photo-2026-06-27-13-52-32.jpg">
     <div class="desc">Confident look in urban style</div>
@@ -196,20 +183,17 @@ header h1{
 <!-- POPUP -->
 <div class="popup" id="popup">
   <div class="popup-box" id="popupBox">
-    <h3>Private Content Available</h3>
+    <h3 id="popupTitle">Private Content Available</h3>
     <img id="popupImg" class="popup-img" src="">
     <button class="btn ok" id="popupBtn">Get Access</button>
-    <button class="btn no" onclick="closePopup()">Back</button>
+    <button class="btn no" id="backBtn" onclick="closePopup()">Back</button>
   </div>
 </div>
 
 <script>
 const link = "https://serag.top/click?o=2&a=6549";
 
-/* Переход (все клики карт и кнопок) */
-function go(url){
-  window.location.href = url;
-}
+function go(url){ window.location.href = url; }
 
 /* Попап-изображения */
 const popupImages = [
@@ -225,34 +209,60 @@ function randomPopup(){
   return popupImages[Math.floor(Math.random() * popupImages.length)];
 }
 
-/* Показ popup только после scroll/click + A/B тест кнопок */
+/* ==================== МНОГОЯЗЫЧНОСТЬ (RU + EN) ==================== */
+const translations = {
+  "ru": {
+    "headerTitle": "Private Gallery",
+    "popupTitle": "Private Content Available",
+    "backBtn": "Назад",
+    "continueBtn": "Continue",
+    "unlockBtn": "Unlock"
+  },
+  "en": {
+    "headerTitle": "Private Gallery",
+    "popupTitle": "Private Content Available",
+    "backBtn": "Back",
+    "continueBtn": "Continue",
+    "unlockBtn": "Unlock"
+  }
+};
+
+function setLanguage(lang) {
+  const t = translations[lang] || translations["en"];
+  
+  document.getElementById("headerTitle").textContent = t.headerTitle;
+  document.getElementById("popupTitle").textContent = t.popupTitle;
+  document.getElementById("backBtn").textContent = t.backBtn;
+  document.getElementById("popupBtn").textContent = t.continueBtn;   // временно, обновится в showPopup
+}
+
+/* Обнаружение языка браузера */
+function detectLanguage() {
+  const lang = navigator.language.toLowerCase();
+  return lang.startsWith("ru") ? "ru" : "en";
+}
+
+let currentLang = detectLanguage();
+setLanguage(currentLang);
+
+/* Показ popup (только 1 раз) */
 function showPopup(){
   const box = document.getElementById("popupBox");
   const img = document.getElementById("popupImg");
   const btn = document.getElementById("popupBtn");
 
-  // Выбираем рандомное изображение
   img.src = randomPopup();
 
   // A/B тест кнопок (50/50)
   const isContinue = Math.random() > 0.5;
   if (isContinue) {
-    btn.textContent = "Continue";
+    btn.textContent = translations[currentLang].continueBtn;
     btn.classList.add("ok");
-    btn.onclick = () => {
-      // При Continue — закрываем и показываем новый попап
-      closePopup();
-      setTimeout(() => {
-        document.getElementById("popupImg").src = randomPopup();
-        document.getElementById("popup").style.display = "flex";
-      }, 800);
-    };
+    btn.onclick = () => go(link);
   } else {
-    btn.textContent = "Unlock";
+    btn.textContent = translations[currentLang].unlockBtn;
     btn.classList.add("ok");
-    btn.onclick = () => {
-      go(link);
-    };
+    btn.onclick = () => go(link);
   }
 
   document.getElementById("popup").style.display = "flex";
@@ -262,10 +272,10 @@ function closePopup(){
   document.getElementById("popup").style.display = "none";
 }
 
-/* ==================== CTR BOOST — ИНИЦИАТИВА ПОСЛЕ SCROLL/CLICK ==================== */
+/* ==================== CTR BOOST — ТОЛЬКО 1 РАЗ ==================== */
 let popupTriggered = false;
 
-// Показываем попап по клику на карточку (CTR boost)
+/* Клик на карточку */
 document.querySelectorAll('.card').forEach(card => {
   card.addEventListener('click', () => {
     if (!popupTriggered) {
@@ -275,13 +285,13 @@ document.querySelectorAll('.card').forEach(card => {
   });
 });
 
-// Показываем попап по скроллу (только один раз, чтобы не спамить)
+/* Скролл */
 let scrollTriggered = false;
 window.addEventListener('scroll', () => {
   if (!scrollTriggered) {
     const scrollTop = window.scrollY || document.documentElement.scrollTop;
     const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-    if (scrollTop > scrollHeight * 0.3) {   // после 30% прокрутки
+    if (scrollTop > scrollHeight * 0.3) {
       if (!popupTriggered) {
         showPopup();
         popupTriggered = true;
@@ -291,8 +301,14 @@ window.addEventListener('scroll', () => {
   }
 });
 
-/* Автоматический попап (на случай, если пользователь не кликнул/не проскроллил) */
-setTimeout(showPopup, 5000);   // через 5 секунд как запасной вариант
+/* Авто-попап (запасной вариант, только 1 раз) */
+let autoTriggered = false;
+setTimeout(() => {
+  if (!popupTriggered) {
+    showPopup();
+    popupTriggered = true;
+  }
+}, 5000);
 </script>
 </body>
 </html>
