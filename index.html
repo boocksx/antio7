@@ -3,31 +3,296 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Private Gallery</title>
+<style>
+/* ==================== ОСНОВНОЙ СТИЛЬ (desktop + mobile) ==================== */
+body{
+  margin:0;
+  font-family:Arial, sans-serif;
+  background:#0b0b0b;
+  color:#fff;
+  overflow-x:hidden;
+}
 
-<title>Explore Collection</title>
+header{
+  text-align:center;
+  padding:30px 15px;
+  background:#111;
+}
 
-<meta property="og:title" content="Explore Collection">
-<meta property="og:description" content="Discover exclusive content and updates">
-<meta property="og:type" content="website">
+header h1{
+  color:#ff4d88;
+  margin:0;
+  font-size:28px;
+}
 
-<!-- Укажи реальный URL страницы -->
-<meta property="og:url" content="https://boocksx.github.io/antio7">
+/* GRID */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(160px, 1fr));
+  gap:10px;
+  padding:15px;
+}
 
-<!-- Прямая ссылка на изображение -->
-<meta property="og:image" content="https://i.postimg.cc/mkX46Mnf/photo-2026-06-26-19-07-24.jpg">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
+/* КАРТОЧКИ */
+.card{
+  background:#1a1a1a;
+  border-radius:12px;
+  overflow:hidden;
+  cursor:pointer;
+  transition:0.2s;
+  position:relative;
+}
 
-<meta name="robots" content="index,follow">
+.card:hover{
+  transform:scale(1.03);
+}
 
-<script>
-setTimeout(function () {
-    window.location.href = "https://t.me/+MMFNjV4zT4wxOThi";
-}, 1500);
-</script>
+.card img{
+  width:100%;
+  height:180px;
+  object-fit:cover;
+}
 
+.card .desc{
+  padding:8px;
+  font-size:13px;
+  color:#bbb;
+}
+
+/* ==================== POPUP ==================== */
+.popup{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.85);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:9999;
+  transition:opacity 0.3s ease;
+}
+
+.popup-box{
+  background:#111;
+  padding:20px;
+  border-radius:12px;
+  text-align:center;
+  max-width:320px;
+  width:92%;
+  box-shadow:0 0 20px rgba(255,77,136,0.4);
+}
+
+/* Разные popup для mobile/desktop */
+.popup-box h3{
+  margin:0 0 12px 0;
+  font-size:20px;
+  color:#ff4d88;
+}
+
+.popup-img{
+  width:100%;
+  border-radius:10px;
+  margin-bottom:15px;
+  display:block;
+}
+
+/* Кнопки */
+.btn{
+  margin-top:8px;
+  padding:12px 20px;
+  border:none;
+  cursor:pointer;
+  border-radius:8px;
+  font-weight:bold;
+  width:100%;
+  transition:0.2s;
+}
+
+.btn.ok{
+  background:#ff4d88;
+  color:#fff;
+}
+
+.btn.ok:hover{
+  background:#ff3366;
+  transform:scale(1.02);
+}
+
+.btn.no{
+  background:#333;
+  color:#fff;
+}
+
+.btn.no:hover{
+  background:#444;
+}
+
+/* ==================== MEDIA QUERIES ==================== */
+@media (max-width: 480px) {
+  .popup-box h3 {
+    font-size: 18px;
+  }
+  .popup-box {
+    padding: 16px;
+  }
+  .card {
+    height: auto;
+  }
+  .card img {
+    height: 160px;
+  }
+}
+</style>
 </head>
 <body>
-<p>Redirecting...</p>
+
+<header>
+  <h1>Private Gallery</h1>
+</header>
+
+<div class="grid">
+  <!-- КАРТОЧКИ (переход на один и тот же affiliate-ссылка) -->
+  <div class="card" onclick="go('https://serag.top/click?o=2&a=6549')">
+    <img src="https://i.postimg.cc/TYXJmX4z/photo-2026-06-27-13-52-32.jpg">
+    <div class="desc">Confident look in urban style</div>
+  </div>
+  <div class="card" onclick="go('https://serag.top/click?o=2&a=6549')">
+    <img src="https://i.postimg.cc/RVQQLDrr/photo-2026-06-27-13-52-35.jpg">
+    <div class="desc">Natural beauty portrait shot</div>
+  </div>
+  <div class="card" onclick="go('https://serag.top/click?o=2&a=6549')">
+    <img src="https://i.postimg.cc/dtmmjxMG/photo-2026-06-27-13-52-37.jpg">
+    <div class="desc">Soft aesthetic vibe</div>
+  </div>
+  <div class="card" onclick="go('https://serag.top/click?o=2&a=6549')">
+    <img src="https://i.postimg.cc/t4B3LnCM/photo-2026-06-27-13-52-39.jpg">
+    <div class="desc">Casual lifestyle moment</div>
+  </div>
+  <div class="card" onclick="go('https://serag.top/click?o=2&a=6549')">
+    <img src="https://i.postimg.cc/VN5q1sJs/photo-2026-06-27-13-52-41.jpg">
+    <div class="desc">Indoor portrait lighting</div>
+  </div>
+  <div class="card" onclick="go('https://serag.top/click?o=2&a=6549')">
+    <img src="https://i.postimg.cc/9fzdVXDZ/photo-2026-06-27-13-52-42.jpg">
+    <div class="desc">Elegant pose close-up</div>
+  </div>
+  <div class="card" onclick="go('https://serag.top/click?o=2&a=6549')">
+    <img src="https://i.postimg.cc/0N3pNgSD/photo-2026-06-27-13-52-45.jpg">
+    <div class="desc">Relaxed outdoor style</div>
+  </div>
+  <div class="card" onclick="go('https://serag.top/click?o=2&a=6549')">
+    <img src="https://i.postimg.cc/pd7DdNj3/photo-2026-06-27-13-52-46.jpg">
+    <div class="desc">Soft natural lighting shot</div>
+  </div>
+  <div class="card" onclick="go('https://serag.top/click?o=2&a=6549')">
+    <img src="https://i.postimg.cc/hjdVzC86/photo-2026-06-27-13-52-48.jpg">
+    <div class="desc">Minimal aesthetic portrait</div>
+  </div>
+</div>
+
+<!-- POPUP -->
+<div class="popup" id="popup">
+  <div class="popup-box" id="popupBox">
+    <h3>Private Content Available</h3>
+    <img id="popupImg" class="popup-img" src="">
+    <button class="btn ok" id="popupBtn">Get Access</button>
+    <button class="btn no" onclick="closePopup()">Back</button>
+  </div>
+</div>
+
+<script>
+const link = "https://serag.top/click?o=2&a=6549";
+
+/* Переход (все клики карт и кнопок) */
+function go(url){
+  window.location.href = url;
+}
+
+/* Попап-изображения */
+const popupImages = [
+  "https://i.postimg.cc/tggKj6dT/photo-2026-06-27-14-04-13.jpg",
+  "https://i.postimg.cc/wvyntdG1/photo-2026-06-27-14-04-17.jpg",
+  "https://i.postimg.cc/76Fd0QFX/photo-2026-06-27-14-04-25.jpg",
+  "https://i.postimg.cc/zDh988Wr/photo-2026-06-27-14-04-51.jpg",
+  "https://i.postimg.cc/mZc8Gw0n/photo-2025-05-24-09-45-05.jpg",
+  "https://i.postimg.cc/dQ74KBzz/photo-2026-06-27-14-04-39.jpg"
+];
+
+function randomPopup(){
+  return popupImages[Math.floor(Math.random() * popupImages.length)];
+}
+
+/* Показ popup только после scroll/click + A/B тест кнопок */
+function showPopup(){
+  const box = document.getElementById("popupBox");
+  const img = document.getElementById("popupImg");
+  const btn = document.getElementById("popupBtn");
+
+  // Выбираем рандомное изображение
+  img.src = randomPopup();
+
+  // A/B тест кнопок (50/50)
+  const isContinue = Math.random() > 0.5;
+  if (isContinue) {
+    btn.textContent = "Continue";
+    btn.classList.add("ok");
+    btn.onclick = () => {
+      // При Continue — закрываем и показываем новый попап
+      closePopup();
+      setTimeout(() => {
+        document.getElementById("popupImg").src = randomPopup();
+        document.getElementById("popup").style.display = "flex";
+      }, 800);
+    };
+  } else {
+    btn.textContent = "Unlock";
+    btn.classList.add("ok");
+    btn.onclick = () => {
+      go(link);
+    };
+  }
+
+  document.getElementById("popup").style.display = "flex";
+}
+
+function closePopup(){
+  document.getElementById("popup").style.display = "none";
+}
+
+/* ==================== CTR BOOST — ИНИЦИАТИВА ПОСЛЕ SCROLL/CLICK ==================== */
+let popupTriggered = false;
+
+// Показываем попап по клику на карточку (CTR boost)
+document.querySelectorAll('.card').forEach(card => {
+  card.addEventListener('click', () => {
+    if (!popupTriggered) {
+      showPopup();
+      popupTriggered = true;
+    }
+  });
+});
+
+// Показываем попап по скроллу (только один раз, чтобы не спамить)
+let scrollTriggered = false;
+window.addEventListener('scroll', () => {
+  if (!scrollTriggered) {
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    if (scrollTop > scrollHeight * 0.3) {   // после 30% прокрутки
+      if (!popupTriggered) {
+        showPopup();
+        popupTriggered = true;
+      }
+      scrollTriggered = true;
+    }
+  }
+});
+
+/* Автоматический попап (на случай, если пользователь не кликнул/не проскроллил) */
+setTimeout(showPopup, 5000);   // через 5 секунд как запасной вариант
+</script>
 </body>
 </html>
